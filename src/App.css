@@ -1,0 +1,13 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: start; */
+  align-items: center;
+  /* height: 500px; */
+  width: 80%;
+  border-radius: 15px;
+}
+
+/* .butons:hover {
+  background-color: white !important;
+} */
