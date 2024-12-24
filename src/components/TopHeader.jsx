@@ -1,11 +1,10 @@
-import { useContext } from "react";
-import { DarkThemeContext } from "../contexts/DarkThemeContext";
-import { LangContext } from "../contexts/LangContext";
+import { useDarkTheme } from "../contexts/DarkThemeContext";
+import { useLang } from "../contexts/LangContext";
 
 // eslint-disable-next-line react/prop-types
 export default function TopHeader({ tit }) {
-  const { dark, setDark } = useContext(DarkThemeContext);
-  const { changeLang } = useContext(LangContext);
+  const { dark, setDark } = useDarkTheme();
+  const { changeLang } = useLang();
   return (
     <div className="flex justify-between items-center w-full  ">
       <label className="swap">

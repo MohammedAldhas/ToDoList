@@ -3,13 +3,19 @@
 import MyList from "../components/MyList";
 import { useContext } from "react";
 import { TasksContext } from "../contexts/TasksContext";
+import { useLang } from "../contexts/LangContext";
 
 function AllTasks() {
   const { tasks } = useContext(TasksContext);
+  const { lang } = useLang();
 
+  let mess = {
+    ar: "ليست لديك أي مهام",
+    en: "You don't hvae any tasks",
+  };
   return (
     (tasks?.length > 0 && <MyList ubdatedTasks={tasks} />) || (
-      <h1 className="text-center ">ليست لديك أي مهام </h1>
+      <h1 className="text-center ">{lang == "en" ? mess.en : mess.ar}</h1>
     )
   );
 }

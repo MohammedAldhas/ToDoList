@@ -1,11 +1,15 @@
 import { Alert } from "@mui/material";
-import { AlertContext } from "../contexts/AlertContext";
-import { useContext, useEffect, useState } from "react";
-import { LangContext } from "../contexts/LangContext";
+
+import { useEffect, useState } from "react";
+
+import { useAlert } from "../contexts/AlertContext";
+import { useBackdrop } from "../contexts/BackdropContext";
+import { useLang } from "../contexts/LangContext";
 // eslint-disable-next-line react/prop-types
-export default function PopUpAlert({ actions }) {
-  const { setAlertText } = useContext(AlertContext);
-  const { lang } = useContext(LangContext);
+export default function PopUpAlert() {
+  const { setAlertText } = useAlert();
+  const { actions } = useBackdrop();
+  const { lang } = useLang();
   const texts = {
     en: `Task ${
       actions === "add" ? "added" : actions === "edit" ? "edited" : "deleted"

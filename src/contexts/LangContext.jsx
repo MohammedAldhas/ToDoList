@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 const LangContext = createContext({ lang: null, changeLang: null });
 const LangProvider = ({ children }) => {
@@ -18,4 +18,7 @@ const LangProvider = ({ children }) => {
     </LangContext.Provider>
   );
 };
-export { LangContext, LangProvider };
+const useLang = () => {
+  return useContext(LangContext);
+};
+export { useLang, LangProvider };

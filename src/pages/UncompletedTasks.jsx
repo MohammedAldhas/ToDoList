@@ -1,27 +1,26 @@
 /* eslint-disable react/prop-types */
 
 import MyList from "../components/MyList";
-import { useEffect, useState, useContext } from "react";
+import { useContext, useMemo } from "react";
 import { TasksContext } from "../contexts/TasksContext";
+import { useLang } from "../contexts/LangContext";
 
 export default function UncompletedTasks() {
-  const [untasks, setunTasks] = useState([]);
   const { tasks } = useContext(TasksContext);
+  const { lang } = useLang();
 
-  useEffect(() => {
-    if (!tasks) {
-      return;
-    }
-
-    const unCompletedTasks = tasks.filter((task) => {
+  let mess = {
+    ar: "ليست لديك مهام غير منجزة",
+    en: "You don't hvae any uncompleted task",
+  };
+  const unCompletedTasks = useMemo(() => {
+    return tasks?.filter((task) => {
       return task.checked == false;
     });
-    setunTasks(unCompletedTasks);
   }, [tasks]);
-
   return (
-    (untasks.length > 0 && <MyList ubdatedTasks={untasks} />) || (
-      <h1 className="text-center ">ليست لديك مهام غير منجزة</h1>
-    )
+    (unCompletedTasks.length > 0 && (
+      <MyList ubdatedTasks={unCompletedTasks} />
+    )) || <h1 className="text-center ">{lang == "en" ? mess.en : mess.ar}</h1>
   );
 }

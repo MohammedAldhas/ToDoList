@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useContext, useState } from "react";
-import { BackDropContext } from "../contexts/backdropContext";
-import { AlertContext } from "../contexts/AlertContext";
+
 import { TasksContext } from "../contexts/TasksContext";
 
 import TaskForm from "./TaskForm";
@@ -15,18 +14,21 @@ import {
   List,
 } from "@mui/material";
 import { Pencil, Trash2 } from "lucide-react";
-import { LangContext } from "../contexts/LangContext";
+
 import DeleteAlert from "./DeleteAlert";
+import { useAlert } from "../contexts/AlertContext";
+import { useBackdrop } from "../contexts/BackdropContext";
+import { useLang } from "../contexts/LangContext";
 function MyList({ ubdatedTasks }) {
   const [hoveredTaskId, setHoveredTaskId] = useState(null);
   const [deleteAlert, setdeleteAlert] = useState(false);
   const [chosenTask, setChosenTask] = useState(null);
 
-  const backDropContext = useContext(BackDropContext);
+  const { actions, actionEdit, handleOpen } = useBackdrop();
   const { changeTasks, tasks } = useContext(TasksContext);
-  const { setAlertText } = useContext(AlertContext);
+  const { setAlertText } = useAlert();
 
-  const { lang } = useContext(LangContext);
+  const { lang } = useLang();
   function onChek(taskID) {
     const newTasks = tasks?.map((task) =>
       task.id != taskID
@@ -37,7 +39,7 @@ function MyList({ ubdatedTasks }) {
   }
   function deleteTask() {
     changeTasks((prevTasks) => prevTasks.filter((t) => t.id !== chosenTask.id));
-    backDropContext.actionEdit("delete");
+    actionEdit("delete");
     setAlertText(true);
     setdeleteAlert(false);
   }
@@ -90,9 +92,9 @@ function MyList({ ubdatedTasks }) {
                   edge="end"
                   aria-label="edit"
                   onClick={() => {
-                    backDropContext.actionEdit("edit");
+                    actionEdit("edit");
 
-                    backDropContext.handleOpen();
+                    handleOpen();
                   }}
                 >
                   <Pencil size={16} className="text-editColor" />
@@ -112,7 +114,7 @@ function MyList({ ubdatedTasks }) {
           </ListItem>
         ))}
       </List>
-      {backDropContext.open && backDropContext.actions == "edit" && (
+      {open && actions == "edit" && (
         <TaskForm chosenTask={chosenTask} setChosenTask={setChosenTask} />
       )}
 

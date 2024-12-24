@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
 
 const DarkThemeContext = createContext({ dark: null, setDark: null });
 const DarkThemeProvider = ({ children }) => {
@@ -18,4 +18,7 @@ const DarkThemeProvider = ({ children }) => {
     </DarkThemeContext.Provider>
   );
 };
-export { DarkThemeContext, DarkThemeProvider };
+const useDarkTheme = () => {
+  return useContext(DarkThemeContext);
+};
+export { useDarkTheme, DarkThemeProvider };

@@ -1,16 +1,17 @@
 /* eslint-disable react/prop-types */
 import { Backdrop, Button } from "@mui/material";
-import { useContext } from "react";
-import { LangContext } from "../contexts/LangContext";
-import { DarkThemeContext } from "../contexts/DarkThemeContext";
+
+import { useDarkTheme } from "../contexts/DarkThemeContext";
+import { useLang } from "../contexts/LangContext";
+
 export default function DeleteAlert({
   chosenTask,
   deleteTask,
   setdeleteAlert,
   deleteAlert,
 }) {
-  const { lang } = useContext(LangContext);
-  const { dark } = useContext(DarkThemeContext);
+  const { lang } = useLang();
+  const { dark } = useDarkTheme();
   return (
     <Backdrop
       sx={{

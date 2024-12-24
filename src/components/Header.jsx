@@ -1,12 +1,12 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ToggleButtonGroup, ToggleButton } from "@mui/material";
 
 import TopHeader from "./TopHeader";
-import { LangContext } from "../contexts/LangContext";
+import { useLang } from "../contexts/LangContext";
 
 function Header() {
-  const { lang } = useContext(LangContext);
+  const { lang } = useLang();
 
   const [alignment, setAlignment] = useState(
     location.pathname.slice(1) || "all"

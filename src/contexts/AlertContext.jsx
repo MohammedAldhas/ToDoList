@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 const AlertContext = createContext({
   alertText: false,
@@ -22,5 +22,8 @@ function AlertProvider({ children }) {
     </AlertContext.Provider>
   );
 }
+const useAlert = () => {
+  return useContext(AlertContext);
+};
 
-export { AlertProvider, AlertContext };
+export { AlertProvider, useAlert };

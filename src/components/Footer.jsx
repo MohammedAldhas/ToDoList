@@ -1,16 +1,17 @@
 import { Button, Divider } from "@mui/material";
-import { useContext, useState } from "react";
-import { BackDropContext } from "../contexts/backdropContext";
-import { DarkThemeContext } from "../contexts/DarkThemeContext";
-import { LangContext } from "../contexts/LangContext";
+import { useState } from "react";
+
 import TaskForm from "./TaskForm";
 
 import { v4 as uuidv4 } from "uuid";
+import { useBackdrop } from "../contexts/BackdropContext";
+import { useDarkTheme } from "../contexts/DarkThemeContext";
+import { useLang } from "../contexts/LangContext";
 
 function Footer() {
-  const backDropContext = useContext(BackDropContext);
-  const { dark } = useContext(DarkThemeContext);
-  const { lang } = useContext(LangContext);
+  const { open, actions, handleOpen, actionEdit } = useBackdrop();
+  const { dark } = useDarkTheme();
+  const { lang } = useLang();
 
   const [newTask, setnewTask] = useState({
     id: null,
@@ -29,8 +30,8 @@ function Footer() {
     setnewTask((pr) => {
       return { ...pr, id: myuuid };
     });
-    backDropContext.actionEdit("add");
-    backDropContext.handleOpen();
+    actionEdit("add");
+    handleOpen();
     clear();
   }
   return (
@@ -49,7 +50,7 @@ function Footer() {
           {lang == "en" ? "New Task" : "مهمه جديدة"}
         </Button>
       </div>
-      {backDropContext.open && backDropContext.actions == "add" && (
+      {open && actions == "add" && (
         <TaskForm
           chosenTask={newTask}
           setChosenTask={setnewTask}

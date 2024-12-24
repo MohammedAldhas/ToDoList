@@ -14,18 +14,15 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import "./App.css";
 
-import { BackDropContext } from "./contexts/backdropContext";
-import { useContext, useState } from "react";
-import { DarkThemeContext } from "./contexts/DarkThemeContext";
+import { useDarkTheme } from "./contexts/DarkThemeContext";
 
-import { AlertContext } from "./contexts/AlertContext";
+import { useAlert } from "./contexts/AlertContext";
 import PopUpAlert from "./components/PopUpAlert";
+import { BackdropProvider } from "./contexts/BackdropContext";
 
 function App() {
-  const { alertText } = useContext(AlertContext);
-  const [open, setOpen] = useState(false);
-  const [actions, setaction] = useState("");
-  const { dark } = useContext(DarkThemeContext);
+  const { alertText } = useAlert();
+  const { dark } = useDarkTheme();
 
   // theme configuration
   const theme = createTheme({
@@ -64,10 +61,6 @@ function App() {
     },
   });
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const actionEdit = (text) => setaction(`${text}`);
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline /> {/* Ensures consistent styles for dark/light mode */}
@@ -86,14 +79,8 @@ function App() {
           className={`main gap-1  p-2 h-[98%] w-[99%] md:w-2/4 border border-mainColor border-opacity-40 px-4`}
         >
           <Header />
-          <Divider />
 
-          <Divider />
-
-          <BackDropContext.Provider
-            value={{ open, handleClose, handleOpen, actionEdit, actions }}
-          >
-            {/* <AlertProvider> */}
+          <BackdropProvider>
             <div className="w-full">
               <Divider />
             </div>
@@ -113,8 +100,8 @@ function App() {
               </Routes>
             </div>
             <Footer />
-            {alertText && <PopUpAlert actions={actions} />}
-          </BackDropContext.Provider>
+            {alertText && <PopUpAlert />}
+          </BackdropProvider>
         </div>
       </div>
     </ThemeProvider>

@@ -1,19 +1,22 @@
 /* eslint-disable react/prop-types */
 import { Button, TextField, Divider, Backdrop } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
-import { BackDropContext } from "../contexts/backdropContext";
+
 import { TasksContext } from "../contexts/TasksContext";
-import { AlertContext } from "../contexts/AlertContext";
-import { DarkThemeContext } from "../contexts/DarkThemeContext";
-import { LangContext } from "../contexts/LangContext";
+
+import { useBackdrop } from "../contexts/BackdropContext";
+import { useDarkTheme } from "../contexts/DarkThemeContext";
+
+import { useAlert } from "../contexts/AlertContext";
+import { useLang } from "../contexts/LangContext";
 
 export default function TaskForm({ chosenTask, setChosenTask, clear }) {
-  const backDropContext = useContext(BackDropContext);
+  const { actions, handleClose, open } = useBackdrop();
   const taskcontext = useContext(TasksContext);
-  const { setAlertText } = useContext(AlertContext);
-  const { lang } = useContext(LangContext);
+  const { setAlertText } = useAlert();
+  const { lang } = useLang();
 
-  const { dark } = useContext(DarkThemeContext);
+  const { dark } = useDarkTheme();
   const [err, setErr] = useState(false);
 
   useEffect(() => {
@@ -21,7 +24,7 @@ export default function TaskForm({ chosenTask, setChosenTask, clear }) {
       return;
     }
     const titleFind = taskcontext?.tasks?.find((t) => {
-      if (backDropContext.actions == "edit") {
+      if (actions == "edit") {
         if (chosenTask.id != t.id) {
           return chosenTask.title == t.title;
         }
@@ -37,7 +40,7 @@ export default function TaskForm({ chosenTask, setChosenTask, clear }) {
     <Backdrop
       dir={lang == "en" ? "ltr" : "rtl"}
       className="backdrop-blur-sm z-50"
-      open={backDropContext.open}
+      open={open}
     >
       <div
         className={`border flex flex-col justify-between gap-3 p-2 pt-10 rounded w-2/3 md:w-2/5 ${
@@ -88,7 +91,7 @@ export default function TaskForm({ chosenTask, setChosenTask, clear }) {
             className="w-24 capitalize"
             color="error"
             onClick={() => {
-              backDropContext.handleClose();
+              handleClose();
             }}
           >
             {lang == "en" ? "cancel" : "الغاء"}
@@ -100,7 +103,7 @@ export default function TaskForm({ chosenTask, setChosenTask, clear }) {
             className="w-24 capitalize"
             sx={{}}
             onClick={() => {
-              if (backDropContext.actions == "add") {
+              if (actions == "add") {
                 taskcontext.changeTasks((pre) => {
                   return [...pre, chosenTask];
                 });
@@ -116,11 +119,11 @@ export default function TaskForm({ chosenTask, setChosenTask, clear }) {
                 taskcontext.changeTasks(editTask);
               }
 
-              backDropContext.handleClose();
+              handleClose();
               setAlertText(true);
             }}
           >
-            {backDropContext.actions == "add"
+            {actions == "add"
               ? lang == "en"
                 ? "add"
                 : "اضافة"
