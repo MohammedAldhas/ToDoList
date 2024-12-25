@@ -2,17 +2,17 @@
 import { Button, TextField, Divider, Backdrop } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 
-import { TasksContext } from "../contexts/TasksContext";
-
 import { useBackdrop } from "../contexts/BackdropContext";
 import { useDarkTheme } from "../contexts/DarkThemeContext";
 
 import { useAlert } from "../contexts/AlertContext";
 import { useLang } from "../contexts/LangContext";
 
+import { TasksContext } from "../contexts/TasksContext";
+
 export default function TaskForm({ chosenTask, setChosenTask, clear }) {
   const { actions, handleClose, open } = useBackdrop();
-  const taskcontext = useContext(TasksContext);
+  const { tasks, dispatch } = useContext(TasksContext);
   const { setAlertText } = useAlert();
   const { lang } = useLang();
 
@@ -23,7 +23,7 @@ export default function TaskForm({ chosenTask, setChosenTask, clear }) {
     if (!chosenTask.title) {
       return;
     }
-    const titleFind = taskcontext?.tasks?.find((t) => {
+    const titleFind = tasks?.find((t) => {
       if (actions == "edit") {
         if (chosenTask.id != t.id) {
           return chosenTask.title == t.title;
@@ -104,19 +104,11 @@ export default function TaskForm({ chosenTask, setChosenTask, clear }) {
             sx={{}}
             onClick={() => {
               if (actions == "add") {
-                taskcontext.changeTasks((pre) => {
-                  return [...pre, chosenTask];
-                });
+                dispatch({ type: "added", payload: { newTaskd: chosenTask } });
 
                 clear();
               } else {
-                let editTask = taskcontext.tasks.map((t) => {
-                  if (t.id == chosenTask.id) {
-                    return chosenTask;
-                  } else return t;
-                });
-
-                taskcontext.changeTasks(editTask);
+                dispatch({ type: "edited", payload: { chosenTask } });
               }
 
               handleClose();

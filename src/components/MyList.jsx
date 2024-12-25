@@ -1,8 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useContext, useState } from "react";
 
-import { TasksContext } from "../contexts/TasksContext";
-
 import TaskForm from "./TaskForm";
 import {
   ListItem,
@@ -19,27 +17,24 @@ import DeleteAlert from "./DeleteAlert";
 import { useAlert } from "../contexts/AlertContext";
 import { useBackdrop } from "../contexts/BackdropContext";
 import { useLang } from "../contexts/LangContext";
+import { TasksContext } from "../contexts/TasksContext";
+
 function MyList({ ubdatedTasks }) {
   const [hoveredTaskId, setHoveredTaskId] = useState(null);
   const [deleteAlert, setdeleteAlert] = useState(false);
-  const [chosenTask, setChosenTask] = useState(null);
 
   const { actions, actionEdit, handleOpen } = useBackdrop();
-  const { changeTasks, tasks } = useContext(TasksContext);
-  const { setAlertText } = useAlert();
 
+  const { setAlertText } = useAlert();
+  const [chosenTask, setChosenTask] = useState(null);
   const { lang } = useLang();
+  const { dispatch } = useContext(TasksContext);
+  // const [tasks, dispatch] = useReducer(tasksReducer, []);
   function onChek(taskID) {
-    const newTasks = tasks?.map((task) =>
-      task.id != taskID
-        ? task // No change
-        : { ...task, checked: !task.checked }
-    );
-    changeTasks(newTasks);
+    dispatch({ type: "checked", payload: { taskID } });
   }
   function deleteTask() {
-    changeTasks((prevTasks) => prevTasks.filter((t) => t.id !== chosenTask.id));
-    actionEdit("delete");
+    dispatch({ type: "deleted", payload: { id: chosenTask.id } });
     setAlertText(true);
     setdeleteAlert(false);
   }

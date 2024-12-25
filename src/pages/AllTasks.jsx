@@ -7,6 +7,7 @@ import { useLang } from "../contexts/LangContext";
 
 function AllTasks() {
   const { tasks } = useContext(TasksContext);
+
   const { lang } = useLang();
 
   let mess = {

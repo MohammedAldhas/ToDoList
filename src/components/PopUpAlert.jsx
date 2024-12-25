@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useAlert } from "../contexts/AlertContext";
 import { useBackdrop } from "../contexts/BackdropContext";
 import { useLang } from "../contexts/LangContext";
-// eslint-disable-next-line react/prop-types
+
 export default function PopUpAlert() {
   const { setAlertText } = useAlert();
   const { actions } = useBackdrop();
